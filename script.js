@@ -1,7 +1,6 @@
 const btn=document.document.getElementById("startBtn");
-if(isRunning) return;
-isRunning=true;
-btn.disabled=true;
+let isRunning=false;
+
 function speak(message) {
   let msg = new SpeechSynthesisUtterance(message);
   msg.lang = "en-IN";
@@ -68,7 +67,9 @@ function spin() {
 // -------- Machine Start --------
 
 async function startMachine() {
-console.log("machine started");
+  if(isRunning) return;
+isRunning=true;
+btn.disabled=true;
   try {
     updateStatus(" Checking water...");
     await checkWater();
