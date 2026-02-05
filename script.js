@@ -1,4 +1,7 @@
-
+const btn=document.document.getElementById("startBtn");
+if(isRunning) return;
+isRunning=true;
+btn.disabled=true;
 function speak(message) {
   let msg = new SpeechSynthesisUtterance(message);
   msg.lang = "en-IN";
@@ -91,7 +94,9 @@ console.log("machine started");
       updateStatus(" E2 Error: Overload");
       speak("Thuni romba athigama iruku. Konjam kammi pannunga.");
     }
-  }
+  }finally{
+    isRunning=false;
+    btn.disabled=false;
+         }
 }
-
 
