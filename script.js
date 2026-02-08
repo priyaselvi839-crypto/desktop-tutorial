@@ -1,4 +1,5 @@
-
+const btn=document.getElementById("startBtn");
+let isRunning=false;
 function speak(message) {
   let msg = new SpeechSynthesisUtterance(message);
   msg.lang = "en-IN";
@@ -65,12 +66,14 @@ function spin() {
 // -------- Machine Start --------
 
 async function startMachine() {
-console.log("machine started");
+if(isRunning) return;
+isRunning=true;
+btn.disabled=true;
   try {
-    updateStatus(" Checking water...");
+    updateStatus(" Checking water supply...");
     await checkWater();
 
-    updateStatus(" Checking load...");
+    updateStatus(" Checking cloth load...");
     await checkLoad();
 
     await wash();
@@ -87,11 +90,16 @@ console.log("machine started");
       speak("Thanni varala. Water supply check pannunga.");
     }
 
-    if (error.startsWith("E2")) {
+   else if (error.startsWith("E2")) {
       updateStatus(" E2 Error: Overload");
       speak("Thuni romba athigama iruku. Konjam kammi pannunga.");
     }
-  }
+  }else{
+updateStatus("Unexpected error");
+speak("Something went wrong,Please try again");
 }
-
+}finally{
+isRunning=false;
+btn.disabled=false;
+}
 
