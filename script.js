@@ -71,10 +71,10 @@ async function startMachine() {
 isRunning=true;
 btn.disabled=true;
   try {
-    updateStatus(" Checking water...");
+    updateStatus("Checking water supply...");
     await checkWater();
 
-    updateStatus(" Checking load...");
+    updateStatus("Checking cloth load...");
     await checkLoad();
 
     await wash();
@@ -91,9 +91,12 @@ btn.disabled=true;
       speak("Thanni varala. Water supply check pannunga.");
     }
 
-    if (error.startsWith("E2")) {
+    else if (error.startsWith("E2")) {
       updateStatus(" E2 Error: Overload");
       speak("Thuni romba athigama iruku. Konjam kammi pannunga.");
+    }else{
+      updateStatus("unexpected error");
+      speak("Something went wrong,please try again");
     }
   }finally{
     isRunning=false;
