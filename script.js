@@ -106,4 +106,16 @@ btn.disabled=true;
     
          }
 }
+resetBtn.addEventListener("click", ()=>{
+  if(isRunning) return;
+
+  document.getElementById("water").value = "yes";
+  document.getElementById("load").value = 5;
+  updateStatus("");
+
+  isError = false;
+  btn.disabled = false;
+  resetBtn.disabled = true;
+});
+
 
