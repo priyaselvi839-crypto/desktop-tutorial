@@ -1,6 +1,6 @@
 let isRunning=false;
 let isError=false;
-const btn=document.document.getElementById("startBtn");
+const btn=document.getElementById("startBtn");
 const resetBtn=document.getElementById("resetBtn");
 resetBtn.disabled=true;
 
