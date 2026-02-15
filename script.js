@@ -84,7 +84,7 @@ btn.disabled=true;
     updateStatus(" Washing completed");
     speak("Washing complete. Thuni ready.");
 
-  } catch (error) {
+  } catch(error) {
 
     if (error.startsWith("E1")) {
       updateStatus(" E1 Error: Water illa");
