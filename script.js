@@ -1,5 +1,8 @@
-const btn=document.document.getElementById("startBtn");
 let isRunning=false;
+let isError=false;
+const btn=document.document.getElementById("startBtn");
+const resetBtn=document.getElementById("resetBtn");
+resetBtn.disabled=true;
 
 function speak(message) {
   let msg = new SpeechSynthesisUtterance(message);
@@ -67,7 +70,7 @@ function spin() {
 // -------- Machine Start --------
 
 async function startMachine() {
-  if(isRunning) return;
+  if(isRunning||isError) return;
 isRunning=true;
 btn.disabled=true;
   try {
@@ -100,7 +103,7 @@ btn.disabled=true;
     }
   }finally{
     isRunning=false;
-    btn.disabled=false;
+    
          }
 }
 
