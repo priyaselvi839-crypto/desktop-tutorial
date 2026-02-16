@@ -73,6 +73,7 @@ async function startMachine() {
   if(isRunning||isError) return;
 isRunning=true;
 btn.disabled=true;
+resetBtn.disabled=false;
   try {
     updateStatus("Checking water supply...");
     await checkWater();
@@ -88,7 +89,7 @@ btn.disabled=true;
     speak("Washing complete. Thuni ready.");
 
   } catch(error) {
-
+    isError=true;
     if (error.startsWith("E1")) {
       updateStatus(" E1 Error: Water illa");
       speak("Thanni varala. Water supply check pannunga.");
