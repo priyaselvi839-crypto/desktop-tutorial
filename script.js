@@ -18,7 +18,7 @@ function updateStatus(text) {
 
 function checkWater() {
   return new Promise((resolve, reject) => {
-    let water = document.getElementById("water").value;
+    let water = Number(document.getElementById("water").value);
 
     setTimeout(() => {
       if (water === "no") {
