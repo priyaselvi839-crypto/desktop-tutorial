@@ -1,4 +1,4 @@
-# 🧺 Washing Machine Simulator
+#  Washing Machine Simulator
 
 ##  Project Description
 This is a web-based washing machine simulator that mimics real-life washing machine behavior. It includes voice-based error handling and a countdown timer system.
