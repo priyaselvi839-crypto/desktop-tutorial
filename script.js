@@ -2,7 +2,7 @@ let isRunning=false;
 let isError=false;
 const btn=document.getElementById("startBtn");
 const resetBtn=document.getElementById("resetBtn");
-resetBtn.disabled=true;
+let totalTimer;
 
 function speak(message) {
   let msg = new SpeechSynthesisUtterance(message);
@@ -12,6 +12,13 @@ function speak(message) {
 
 function updateStatus(text) {
   document.getElementById("status").innerText = text;
+}
+function formatTime(seconds){
+  let m=Math.floor(seconds/60);
+  let s=seconds%60;
+  m=m<10?"0"+m:m;
+  s=s<10?"0"+s:s;
+  return `${m}:${s}`;
 }
 
 // -------- Error checks --------
@@ -32,7 +39,7 @@ function checkWater() {
 
 function checkLoad() {
   return new Promise((resolve, reject) => {
-    let load = Number(document.getElementById("load").value);
+    let load = document.getElementById("load").value;
 
     setTimeout(() => {
       if (load > 7) {
@@ -44,27 +51,29 @@ function checkLoad() {
   });
 }
 
-// -------- Washing stages --------
+// -------- Single timer--------
 
-function wash() {
-  return new Promise(resolve => {
-    updateStatus(" Washing...");
-    setTimeout(resolve, 2000);
-  });
-}
 
-function rinse() {
-  return new Promise(resolve => {
-    updateStatus("Rinsing...");
-    setTimeout(resolve, 2000);
-  });
-}
-
-function spin() {
-  return new Promise(resolve => {
-    updateStatus(" Spinning...");
-    setTimeout(resolve, 2000);
-  });
+function startMachineTimer(totalDuration) {
+  let timeLeft=totalDuration;
+  totalTimer=setInterval(()=>{
+    document.getElementById("timer").innerText=`${formatTime(timeLeft)}`;
+    if(timeLeft>7){
+      updateStatus("Washing...........");
+    }else if(timeLeft>3){
+      updateStatus("Rinsing.......");
+    }else if(timeLeft>0){
+      updateStatus("spinning......");
+    }
+    if(timeLeft===0){
+      clearInterval(totalTimer);
+      updateStatus("washing completed....");
+      document.getElementById("timer").innerText="Done";
+      speak("washing complete..Thuni ready!");
+      isRunning=false;
+    }
+    timeLeft--;
+  },1000);
 }
 
 // -------- Machine Start --------
@@ -81,15 +90,11 @@ resetBtn.disabled=false;
     updateStatus("Checking cloth load...");
     await checkLoad();
 
-    await wash();
-    await rinse();
-    await spin();
-
-    updateStatus(" Washing completed");
-    speak("Washing complete. Thuni ready.");
+    startMachineTimer(12);
 
   } catch(error) {
     isError=true;
+    clearInterval(totalTimer);
     if (error.startsWith("E1")) {
       updateStatus(" E1 Error: Water illa");
       speak("Thanni varala. Water supply check pannunga.");
@@ -102,10 +107,11 @@ resetBtn.disabled=false;
       updateStatus("unexpected error");
       speak("Something went wrong,please try again");
     }
-  }finally{
-    isRunning=false;
+  
     
-         }
+    isRunning=false;
+  }
+         
 }
 resetBtn.addEventListener("click", ()=>{
   if(isRunning) return;
@@ -113,10 +119,12 @@ resetBtn.addEventListener("click", ()=>{
   document.getElementById("water").value = "yes";
   document.getElementById("load").value = 5;
   updateStatus("");
+  document.getElementById("timer").innerText="";
+  clearInterval(totalTimer);
 
   isError = false;
   btn.disabled = false;
   resetBtn.disabled = true;
 });
-
-
+//Event
+btn.addEventListener("click",startMachine);

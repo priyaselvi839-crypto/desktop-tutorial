@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>React Hook Simulation</title>
+  <title></title>
 </head>
 <body>
-  <script src="App.js"></script>
+<p id="timer"></p>
+<script>
+ let timer;
+
+function startTimer() {
+  let timeLeft = 10;
+
+  clearInterval(timer);
+
+  timer = setInterval(() => {
+    document.getElementById("timer").innerText = timeLeft;
+    timeLeft--;
+
+    if (timeLeft < 0) {
+      clearInterval(timer);
+      document.getElementById("timer").innerText = "Done";
+    }
+
+  }, 1000);
+}
+
+startTimer();
+</script>
 </body>
 </html>
