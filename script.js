@@ -39,7 +39,7 @@ function checkWater() {
 
 function checkLoad() {
   return new Promise((resolve, reject) => {
-    let load = document.getElementById("load").value;
+    let load = Number(document.getElementById("load").value)||0;
 
     setTimeout(() => {
       if (load > 7) {
